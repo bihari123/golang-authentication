@@ -1,0 +1,19 @@
+# Difference between authentication and authorization
+ - Authentication 
+   - Determines who you are
+   - Verifies that no one is impersonating you
+ - Authorization 
+   - Says what you are allowed to do 
+   - the name of the http header used for authentication
+
+# Http Basic Authentication
+ - Basic authentication part of the specification of http
+   - send user name and pass with every request
+   - uses authentication header annd keyword "basic"
+     - put "username:password" together
+     - convert them to base64
+       - puts generic binary data into printable string
+       - base64 is reversible
+         - never use it with http, always use https       
+  - ex curl -u user:pass     
+  - use basic authentication to login screen, from there you can use multi-factor authenticatio

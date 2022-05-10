@@ -1,9 +1,8 @@
 package main
 
-import (
-	jsonencoding "github.com/bihari123/golang-authentication/json-encoding"
-)
+import httpauth "github.com/bihari123/golang-authentication/http-auth"
 
 func main(){
-  jsonencoding.JsonEncodingDecoding()
+ // jsonencoding.JsonEncodingDecoding()
+httpauth.ConvertToBase64() 
 }
