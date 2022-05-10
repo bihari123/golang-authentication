@@ -15,5 +15,11 @@
        - puts generic binary data into printable string
        - base64 is reversible
          - never use it with http, always use https       
-  - ex curl -u user:pass     
-  - use basic authentication to login screen, from there you can use multi-factor authenticatio
+  - ex curl -u user:pass    
+  - use basic authentication to login screen, from there you can use multi-factor Authentication
+
+# Storing password
+ - Never store passwords 
+ - Instead store the one way encryption "hash" values of the password
+ - earlier bcrypt was the industry standard, but now scrypt is graining traction.
+ - for hashing algorithm, the older the better as you know that it has been there for that long without being broken.
