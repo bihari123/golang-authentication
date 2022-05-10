@@ -1,4 +1,4 @@
-package httpauth
+ package httpauth
 
 import (
 	"crypto/hmac"
@@ -16,7 +16,13 @@ func GenerateKey(key []byte)[]byte{
   return key 
 }
 func signMessage(msg []byte)([]byte,error){
-  h:= hmac.New(sha512.New(),GenerateKey(key)) // key is something that you generate yourself and will use for all messages with this  hmac:- to create that cryptographic signature and validate that signature. So, HMAC is only good for sending messages to yourself bcoz you need the same key. Also, the key size should match the size of your hashing algorithm. A sha512 is of the size 64 bytes. Hence you need a key of size 64 bytes.
+  h:= hmac.New(sha512.New,GenerateKey(key)) // key is something that you generate yourself and 
+                                              //will use for all messages with this hmac:- to create that                                                                                                                               
+                                              //cryptographic signature and validate that signature. 
+                                              //So, HMAC is only good for sending messages to yourself 
+                                              //bcoz you need the same key.
+                                              //Also, the key size should match the size of your hashing algorithm. 
+                                              //A sha512 is of the size 64 bytes. Hence you need a key of size 64 bytes.
   _,err:=h.Write(msg)
 
   if err!=nil{

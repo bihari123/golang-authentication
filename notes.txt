@@ -32,3 +32,9 @@
   - To prevent faked bearer  tokens, use cryptographic "signing"
     - cryptographic signing is a way to prove that the value was created by a specific person
     - HMAC ( hashed message authentication code)
+
+# JWT
+ - JSON web token 
+ - HMAC gives you the signature then you have to find a way to get both the signature and the message together in your bearer token. JSON WebTokens or JWT does that for you
+ - JWT consist of two JSON object and a signature ( which can be through HMAC or other signature algorithm)
+   {JWT standard field }.{your standard field}.Signature      // all encoded in base64 
