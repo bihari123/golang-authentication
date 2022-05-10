@@ -3,8 +3,6 @@ package httpauth
 import (
 	"encoding/base64"
 	"fmt"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 func ConvertToBase64() {

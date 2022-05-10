@@ -23,3 +23,12 @@
  - Instead store the one way encryption "hash" values of the password
  - earlier bcrypt was the industry standard, but now scrypt is graining traction.
  - for hashing algorithm, the older the better as you know that it has been there for that long without being broken.
+
+ # Bearer Token and HMAC
+  - Bearer Token
+    - added to the http spec with OAUTH2
+    - uses authorization header & keyword "bearer"
+    - if you log into any website via google authentication, then on the backend, you are already logged in to google and the server talks to google, gets a bearer token and adds it to the header
+  - To prevent faked bearer  tokens, use cryptographic "signing"
+    - cryptographic signing is a way to prove that the value was created by a specific person
+    - HMAC ( hashed message authentication code)
