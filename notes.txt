@@ -37,4 +37,59 @@
  - JSON web token 
  - HMAC gives you the signature then you have to find a way to get both the signature and the message together in your bearer token. JSON WebTokens or JWT does that for you
  - JWT consist of two JSON object and a signature ( which can be through HMAC or other signature algorithm)
-   {JWT standard field }.{your standard field}.Signature      // all encoded in base64 
+   {Header }.{Payload}.Signature      // all encoded in base64
+ - The information contained in the header describes the algorithm used to generate the signature. The decoded version of the header from
+    the above example looks like:
+
+    {
+
+       "alg": "HS256",
+
+       "typ": "JWT"
+
+     }
+ - All the claims within JWT authentication are stored in this part. Claims are used to provide authentication to the party receiving the
+   token. For example, a server can set a claim saying ‘isAdmin: true’ and issue it to an administrative user upon successfully logging
+   into the application. The admin user can now send this token in every consequent request he/she sends to the server to prove their
+   identity.
+
+   The decoded version of the payload from the JWT example provided above looks like:
+
+   {
+
+   "sub": "1234567890",
+
+   "name": "John Doe",
+
+   "iat": 1516239022
+
+   }
+
+  The ‘name’ field is used to identify the user to whom the token was issued to. The ‘sub’ and ‘iat’ are examples of registered claims and
+  are short for ‘subject’ and ‘issued at’.
+
+  - The signature part of a JWT is derived from the header and payload fields. The steps involved in creating this signature are described below:
+
+1. Combine the base64url encoded representations of header and payload with a dot (.)
+
+base64UrlEncode(header) + “.” + base64UrlEncode(payload)
+
+2. Hash the above data with a secret-key only known to the server issuing the token. The hashing algorithm is the one described inside
+the header.
+
+hash_value = hash([base64UrlEncode(header) + “.” + base64UrlEncode(payload)], secret-key)
+
+3. Base64Url encode the hash value obtained from the step above
+
+Signature = base64UrlEncode(hash_value)
+
+Because the ‘secret-key’ is only known to the server, only it can issue new tokens with a valid signature. Users can not forge tokens as
+producing a valid Signature for the token requires the knowledge of the ‘secret-key’.
+
+JWT find their applications in various authentication mechanisms. These are typically passed in the Authorization header when a user
+submits a request to the client.
+
+eg:
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0I
+joxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
