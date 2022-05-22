@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+  jwt	 "github.com/dgrijalva/jwt-go"
 )
 
 type UserClaims struct{
@@ -32,4 +32,25 @@ func createToken(c *UserClaims)(string , error){
 
     return signedToken,nil
 
+}
+func parseToken( signedToken string)(*UserClaims , error){
+	claims:= &UserClaims{}
+	t,err:= jwt.ParseWithClaims(signedToken,claims,func (t *jwt.Token)(interface{},error)  {
+
+		if t.Method.Alg()!=jwt.SigningMethodHS512.Alg(){
+			return nil, fmt.Errorf("Invalid signing algorithm")
+		}
+     return GenerateKey(key),nil 
+	})
+
+	if err!=nil{
+		return nil,fmt.Errorf("Error in parse token while parsing token: %w",err)
+	}
+	
+	if !t.Valid{
+		return nil,fmt.Errorf("Error in parsing tokien, token invalid")
+
+	}
+
+	return t.Claims.(*UserClaims),nil  
 }

@@ -6,8 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
-	
+jwt 	 "github.com/dgrijalva/jwt-go"
 )
 
 type Credentials struct {
@@ -179,34 +178,34 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-// We ensure that a new token is not issued until enough time has elapsed
-        // In this case, a new token will only be issued if the old token is within
-        // 30 seconds of expiry. Otherwise, return a bad request status
+	// We ensure that a new token is not issued until enough time has elapsed
+	// In this case, a new token will only be issued if the old token is within
+	// 30 seconds of expiry. Otherwise, return a bad request status
 
-				if time.Unix(claims.ExpiresAt,0).Sub(time.Now()) > 30*time.Second{
-            w.WriteHeader(http.StatusBadRequest)
-            return
-				}
+	if time.Unix(claims.ExpiresAt, 0).Sub(time.Now()) > 30*time.Second {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
-				// Now, create a new token for the current use, with a renewed expiration expirationTime
-				expirationTime:= time.Now().Add(5*time.Minute)
+	// Now, create a new token for the current use, with a renewed expiration expirationTime
+	expirationTime := time.Now().Add(5 * time.Minute)
 
-				claims.ExpiresAt= expirationTime.Unix()
+	claims.ExpiresAt = expirationTime.Unix()
 
-				token:=jwt.NewWithClaims(jwt.SigningMethodHS256,claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-				tokenString,err:=token.SignedString(jwtKey)
+	tokenString, err := token.SignedString(jwtKey)
 
-				if err!=nil{
-					w.WriteHeader(http.StatusInternalServerError)
-					return 
-				}
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-				// Set the new token as the users 'token' cookie
+	// Set the new token as the users 'token' cookie
 
-				http.SetCookie(w, &http.Cookie{
-					Name: "token",
-					Value: tokenString,
-					Expires: expirationTime,
-				})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   tokenString,
+		Expires: expirationTime,
+	})
 }
